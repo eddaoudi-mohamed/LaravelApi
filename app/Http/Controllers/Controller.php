@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Tymon\JWTAuth\Contracts\Providers\Auth as ProvidersAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Controller extends BaseController
 {
@@ -37,5 +37,19 @@ class Controller extends BaseController
         $user = Auth::guard("api")->user();
 
         return $this->returnData("token", [$token, $user], true);
+    }
+
+    public function logout(Request $request)
+    {
+        $token = $request->header('auth-token');
+
+
+        if ($token) {
+            JWTAuth::setToken($token)->invalidate();
+            return $this->returnSuccess("logout successfuly", "#0004");
+        } else {
+
+            return $this->returnError("some thing worng", "#333");
+        }
     }
 }
