@@ -31,7 +31,7 @@ Route::post("/check", function (Request $request) {
     $validator = Validator::make($request->all(), $rules);
     if ($validator->fails()) {
         $messages = $validator->messages();
-        return throw new HttpResponseException(response()->json(['errors' => $messages,  'succes' => false]), 422);
+        return throw new HttpResponseException(response()->json(['errors' => $messages,  'succes' => false]), 404);
     }
 
     return response()->json(['succes' => true]);
