@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,5 +36,7 @@ Route::post("/check", function (Request $request) {
         return throw new HttpResponseException(response()->json(['errors' => $messages,  'succes' => false]), 404);
     }
 
-    return response()->json(['succes' => true]);
+    $user = Auth::guard("api")->user();
+    return response()->json(['succes' => true, "data" => $user]);
 });
+Route::post("/login", [Controller::class, "login"]);
