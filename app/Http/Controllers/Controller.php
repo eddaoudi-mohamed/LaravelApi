@@ -35,9 +35,11 @@ class Controller extends BaseController
         if (!$token) {
             return $this->returnError("credentials not correct", "#0000");
         }
+
         $user = Auth::guard("api")->user();
 
         return $this->returnData("token", [$token, $user], true);
+        // return response("login success", 200, [$token, $user])->withCookie($token);
     }
 
     public function logout(Request $request)
@@ -57,5 +59,10 @@ class Controller extends BaseController
 
             return $this->returnError("some thing worng", "#333");
         }
+    }
+    public function profile()
+    {
+        $user = Auth::user();
+        return $this->returnData("user", $user,  "#200");
     }
 }

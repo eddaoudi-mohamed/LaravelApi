@@ -41,3 +41,5 @@ Route::post("/check", function (Request $request) {
 });
 Route::post("/login", [Controller::class, "login"]);
 Route::post("/logout", [Controller::class, "logout"])->middleware("auth.user:api");
+
+Route::get("/profile", [Controller::class, "profile"])->middleware("auth.user:api");
