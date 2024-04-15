@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use PhpParser\Node\Stmt\TryCatch;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Controller extends BaseController
@@ -45,8 +46,13 @@ class Controller extends BaseController
 
 
         if ($token) {
-            JWTAuth::setToken($token)->invalidate();
-            return $this->returnSuccess("logout successfuly", "#0004");
+            try {
+                JWTAuth::setToken($token)->invalidate();
+                return $this->returnSuccess("logout successfuly", "#0004");
+            } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+
+                return $this->returnError($e->getMessage(), "#333");
+            }
         } else {
 
             return $this->returnError("some thing worng", "#333");

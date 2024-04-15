@@ -40,4 +40,4 @@ Route::post("/check", function (Request $request) {
     return response()->json(['succes' => true, "data" => $user]);
 });
 Route::post("/login", [Controller::class, "login"]);
-Route::post("/logout", [Controller::class, "logout"]);
+Route::post("/logout", [Controller::class, "logout"])->middleware("auth.user:api");
