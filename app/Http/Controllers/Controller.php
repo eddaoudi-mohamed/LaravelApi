@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Traits\GeneraleTrait;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use PhpParser\Node\Stmt\TryCatch;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Controller extends BaseController
 {
@@ -62,7 +64,7 @@ class Controller extends BaseController
     }
     public function profile()
     {
-        $user = Auth::user();
-        return $this->returnData("user", $user,  "#200");
+        $user = User::paginate(10);
+        return  UserResource::collection($user);
     }
 }
